@@ -1,7 +1,7 @@
 
 # Cloud Storage Bucket
 module "gcs_bucket" {
-  source             = "./modules/cloud_storage"
+  source             = "./cloud_storage"
   name               = "spring-petclinic-init"
   location           = var.location
   project            = var.project_id
@@ -10,7 +10,7 @@ module "gcs_bucket" {
 
 # KMS Key
 module "kms_key" {
-  source             = "./modules/kms"
+  source             = "./kms"
   name               = "spring-petclinic-init-key"
   location           = var.location
   project            = var.project_id
@@ -20,7 +20,8 @@ module "kms_key" {
 
 # Custom IAM Role
 module "custom_role" {
-  source             = "./modules/custom_roles"
+  source             = "./custom_roles"
+  project = var.project_id
   role_id            = "spring_petclinic_custom_role"
   title              = "Spring Petclinic Custom Role"
   description        = "Custom role for Spring Petclinic GCP resources"
@@ -37,8 +38,9 @@ module "custom_role" {
 
 # Service Account
 module "service_account" {
-  source             = "./modules/service_account"
+  source             = "./service_account"
   account_id         = "spring-petclinic-sa"
+  project            = var.project_id
   display_name       = "Service Account for Spring Petclinic"
   roles              = [
     "roles/storage.admin",

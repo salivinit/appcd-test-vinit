@@ -5,12 +5,17 @@ resource "google_kms_key_ring" "key_ring" {
 }
 
 resource "google_kms_crypto_key" "key" {
-  name            = var.name
-  key_ring        = google_kms_key_ring.key_ring.id
-  purpose         = "ENCRYPT_DECRYPT"
-  project         = var.project
+  name     = "your-key-name"
+  key_ring  = var.key_ring
+  purpose   = "ENCRYPT_DECRYPT"
+
+  rotation_period = "86400s" # 1 day
+  version_template {
+    algorithm = "GOOGLE_SYMMETRIC_ENCRYPTION"
+  }
 }
 
-output "key_name" {
-  value = google_kms_crypto_key.key.name
+output "key_id" {
+  value = google_kms_crypto_key.key.id
 }
+
