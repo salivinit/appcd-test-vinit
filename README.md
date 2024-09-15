@@ -18,6 +18,10 @@ TEST-APP/
 ├── plan.yaml                  # (Optional) Terraform plan configuration for CI/CD pipelines
 ├── apply.yaml                 # (Optional) Apply configuration for CI/CD pipelines
 │
+├── cloud_build/               # Cloud Build configuration folder
+│   ├── apply.yaml             # Configuration for Terraform apply in CI/CD pipelines
+│   └── plan.yaml              # Configuration for Terraform plan in CI/CD pipelines
+|
 ├── cloud_storage/             # Module for creating GCS buckets
 │   ├── main.tf                # Resource definition for Cloud Storage
 │   ├── outputs.tf             # Outputs for Cloud Storage module
