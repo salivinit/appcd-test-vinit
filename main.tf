@@ -1,7 +1,3 @@
-provider "google" {
-  project = var.project_id
-  region  = var.region
-}
 
 # Cloud Storage Bucket
 module "gcs_bucket" {

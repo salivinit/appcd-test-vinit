@@ -1,5 +1,6 @@
 steps:
 
+# Step to print the branch name
 - id: 'branch name'
   name: 'alpine'
   entrypoint: 'sh'
@@ -10,17 +11,17 @@ steps:
       echo  "$BRANCH_NAME"
       echo  "******************"
 
-
-
+# Step to initialize Terraform from the root directory
 - id: 'tf init'
   name: 'hashicorp/terraform'
   entrypoint: 'sh'
   args:
   - '-c'
   - |
-      cd Terraform
+      cd ..
       terraform init
 
+# Step to plan Terraform from the root directory
 # [START tf-plan]
 - id: 'tf-plan'
   name: 'hashicorp/terraform'
@@ -29,8 +30,9 @@ steps:
   - '-c'
   - |
       echo  "********TERRAFORM PLAN ***********"
-      cd Terraform
+      cd ..
       terraform plan 
+# [END tf-plan]
 
 timeout: 7200s
 logsBucket: 'gs://bkt-demo-bucket-tfbackend'
