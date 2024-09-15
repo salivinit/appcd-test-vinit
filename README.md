@@ -191,6 +191,101 @@ terraform destroy
 
 ---
 
+## Cloud Build Integration
+
+We use **Google Cloud Build** to automate the execution of Terraform commands (i.e., `terraform init`, `terraform plan`, and `terraform apply`) from the root directory of this repository.
+
+### Cloud Build Configuration
+
+The Cloud Build YAML file is located in the `cloud_build` directory (`cloud_build/apply.yaml` or `cloud_build/plan.yaml`). This YAML file automates the following steps:
+
+1. **Display Branch Name**: Prints the current branch name being deployed.
+2. **Terraform Init**: Initializes the Terraform environment from the root directory.
+3. **Terraform Plan**: Runs the `terraform plan` command to show the execution plan for Terraform changes.
+4. **Terraform Apply**: Applies the planned changes using `terraform apply` with the `-auto-approve` flag to automatically confirm the changes.
+
+### Running Cloud Build with Terraform
+
+Cloud Build executes the following commands to work with the Terraform files located in the root directory of this repository:
+
+- **Terraform Init**:  
+   Initializes Terraform from the root directory.
+   ```bash
+   terraform init
+   ```
+
+- **Terraform Plan**:  
+   Generates an execution plan.
+   ```bash
+   terraform plan
+   ```
+
+- **Terraform Apply**:  
+   Applies the Terraform configuration with automatic approval.
+   ```bash
+   terraform apply -auto-approve
+   ```
+
+### Cloud Build YAML Example
+
+Here’s an example of the Cloud Build YAML file located in `cloud_build/plan.yaml`:
+
+```yaml
+steps:
+
+# Step to print the branch name
+- id: 'branch name'
+  name: 'alpine'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      echo  "******************"
+      echo  "$BRANCH_NAME"
+      echo  "******************"
+
+# Step to initialize Terraform from the root directory
+- id: 'tf init'
+  name: 'hashicorp/terraform'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      cd ..
+      terraform init
+
+# Step to plan Terraform from the root directory
+# [START tf-plan]
+- id: 'tf-plan'
+  name: 'hashicorp/terraform'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      echo  "********TERRAFORM PLAN ***********"
+      cd ..
+      terraform plan 
+# [END tf-plan]
+
+# Step to apply Terraform from the root directory
+# [START tf-apply]
+- id: 'tf-apply'
+  name: 'hashicorp/terraform'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      echo  "********TERRAFORM APPLY **********"
+      cd ..
+      terraform apply -auto-approve
+# [END tf-apply]
+
+timeout: 7200s
+logsBucket: 'gs://bkt-demo-bucket-tfbackend'
+```
+
+This YAML file assumes that the `main.tf` file is located in the root directory and adjusts the directory accordingly (with `cd ..`) to run the commands from the correct location.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
