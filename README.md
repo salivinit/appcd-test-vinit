@@ -15,8 +15,8 @@ TEST-APP/
 ├── main.tf                   # Root main Terraform file that calls all modules
 ├── variables.tf               # Global variables for the root module
 ├── outputs.tf                 # Root-level output values
-├── plan.yaml                  # (Optional) Terraform plan configuration for CI/CD pipelines
-├── apply.yaml                 # (Optional) Apply configuration for CI/CD pipelines
+|── backend.tf                 # Root-level backend
+|── providers.tf               # Provider fo the TF code
 │
 ├── cloud_build/               # Cloud Build configuration folder
 │   ├── apply.yaml             # Configuration for Terraform apply in CI/CD pipelines
@@ -24,25 +24,21 @@ TEST-APP/
 |
 ├── cloud_storage/             # Module for creating GCS buckets
 │   ├── main.tf                # Resource definition for Cloud Storage
-│   ├── outputs.tf             # Outputs for Cloud Storage module
 │   ├── variables.tf           # Variables for Cloud Storage module
 │   └── versions.tf            # Terraform version constraints
 │
 ├── custom_roles/              # Module for defining custom IAM roles
 │   ├── main.tf                # Resource definition for IAM custom roles
-│   ├── outputs.tf             # Outputs for Custom Roles module
 │   ├── variables.tf           # Variables for Custom Roles module
 │   └── versions.tf            # Terraform version constraints
 │
 ├── kms/                       # Module for creating KMS keys
 │   ├── main.tf                # Resource definition for KMS keys
-│   ├── outputs.tf             # Outputs for KMS module
 │   ├── variables.tf           # Variables for KMS module
 │   └── versions.tf            # Terraform version constraints
 │
 ├── service_account/            # Module for creating Service Accounts
 │   ├── main.tf                # Resource definition for Service Accounts
-│   ├── outputs.tf             # Outputs for Service Accounts module
 │   ├── variables.tf           # Variables for Service Accounts module
 │   └── versions.tf            # Terraform version constraints
 ```
